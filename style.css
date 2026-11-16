@@ -361,3 +361,13 @@ a { color: inherit; }
 .switch input:disabled + span { opacity: .6; }
 .switch input:focus-visible + span { outline: 3px solid var(--accent); outline-offset: 2px; }
 .ck-modal-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; margin-top: 18px; }
+
+/* ===== Footer snowman ===== */
+.snowman { position: absolute; right: 6%; bottom: 100%; z-index: 2; width: 104px; pointer-events: none; }
+.snowman svg { display: block; width: 100%; height: auto; overflow: visible; }
+.sm-arm { transform-origin: 80px 72px; animation: smwave 2.4s ease-in-out infinite; }
+@keyframes smwave { 0%, 100% { transform: rotate(-8deg); } 50% { transform: rotate(14deg); } }
+.sm-bubble { position: absolute; right: 100%; top: 4px; margin-right: 2px; white-space: nowrap; padding: 5px 11px; border-radius: 12px 12px 3px 12px;
+  background: var(--accent); color: #fff; font: 700 .75rem "Montserrat", Arial, sans-serif; }
+@media (max-width: 900px) { .f-bottom { margin-top: 130px; } .snowman { right: 4%; width: 88px; } }
+@media (prefers-reduced-motion: reduce) { .sm-arm { animation: none; } }
