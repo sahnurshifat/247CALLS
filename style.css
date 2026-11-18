@@ -362,12 +362,50 @@ a { color: inherit; }
 .switch input:focus-visible + span { outline: 3px solid var(--accent); outline-offset: 2px; }
 .ck-modal-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; margin-top: 18px; }
 
-/* ===== Footer snowman ===== */
-.snowman { position: absolute; right: 6%; bottom: 100%; z-index: 2; width: 104px; pointer-events: none; }
+/* ===== Footer snowman (Christmas edition) ===== */
+.snowman { position: absolute; right: 6%; bottom: 100%; z-index: 2; width: 132px; pointer-events: none; }
 .snowman svg { display: block; width: 100%; height: auto; overflow: visible; }
-.sm-arm { transform-origin: 80px 72px; animation: smwave 2.4s ease-in-out infinite; }
-@keyframes smwave { 0%, 100% { transform: rotate(-8deg); } 50% { transform: rotate(14deg); } }
-.sm-bubble { position: absolute; right: 100%; top: 4px; margin-right: 2px; white-space: nowrap; padding: 5px 11px; border-radius: 12px 12px 3px 12px;
-  background: var(--accent); color: #fff; font: 700 .75rem "Montserrat", Arial, sans-serif; }
-@media (max-width: 900px) { .f-bottom { margin-top: 130px; } .snowman { right: 4%; width: 88px; } }
-@media (prefers-reduced-motion: reduce) { .sm-arm { animation: none; } }
+.sm-arm { transform-origin: 98px 100px; animation: smwave 2.4s ease-in-out infinite; }
+@keyframes smwave { 0%, 100% { transform: rotate(-6deg); } 50% { transform: rotate(12deg); } }
+.sm-sp { transform-box: fill-box; transform-origin: center; animation: smtw 1.8s ease-in-out infinite; }
+@keyframes smtw { 0%, 100% { opacity: .25; transform: scale(.6); } 50% { opacity: 1; transform: scale(1.1); } }
+.sm-bubble { position: absolute; left: 50%; bottom: 100%; transform: translateX(-50%); margin-bottom: 8px; white-space: nowrap; padding: 5px 12px;
+  border-radius: 12px; background: var(--accent); color: #fff; font: 700 .75rem "Montserrat", Arial, sans-serif; }
+.sm-bubble::after { content: ""; position: absolute; left: 50%; top: 100%; margin-left: -5px; border: 5px solid transparent; border-top-color: var(--accent); }
+@media (max-width: 900px) { .f-bottom { margin-top: 170px; } .snowman { width: 116px; } }
+@media (max-width: 560px) { .f-bottom { margin-top: 56px; } .snowman { right: 3%; } }   /* single column: he overlaps the empty space beside the contact details */
+@media (prefers-reduced-motion: reduce) { .sm-arm, .sm-sp { animation: none; } }
+
+/* ===== Footer logo: smaller on phones ===== */
+.logo { max-width: 100%; }
+.logo img { max-width: 100%; }
+@media (max-width: 760px) { .logo img { height: 30px; } .site-footer .logo img { height: 28px; } }
+@media (max-width: 380px) { .logo img { height: 26px; } .site-footer .logo img { height: 24px; } }
+
+/* ===== Missed-call calculator ===== */
+.calc { display: grid; grid-template-columns: 1.1fr 1fr; max-width: 980px; margin: 40px auto 0; overflow: hidden; background: #fff;
+  border: 1px solid var(--line); border-radius: 26px; box-shadow: 0 24px 60px rgba(108,99,255,.16); }
+.calc-inputs { display: grid; gap: 26px; align-content: center; padding: 38px 34px; }
+.calc-field label { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 10px; font-weight: 700; }
+.calc-field output { color: var(--accent-dark); font-family: "Montserrat", Arial, sans-serif; }
+.calc input[type="range"] { width: 100%; height: 6px; cursor: pointer; accent-color: var(--accent); }
+.calc-toggle { justify-self: start; display: inline-flex; padding: 4px; background: var(--bg-alt); border: 1px solid var(--line); border-radius: 999px; }
+.calc-toggle button { padding: 9px 18px; border: 0; border-radius: 999px; background: none; color: var(--muted); font: 700 .9rem "Montserrat", Arial, sans-serif; cursor: pointer; transition: background .2s, color .2s; }
+.calc-toggle button.on { background: var(--accent); color: #fff; }
+.calc-out { position: relative; overflow: hidden; padding: 38px 34px; color: #fff; background: linear-gradient(160deg, #4a3fd1 0%, #2b2380 100%); }
+.calc-out::after { content: ""; position: absolute; top: -70px; right: -70px; width: 220px; height: 220px; border-radius: 50%; background: rgba(255,255,255,.07); }
+.calc-out > * { position: relative; z-index: 1; }
+.calc-label { margin: 0; font-size: .95rem; opacity: .85; }
+.calc-big { margin: 6px 0 22px; font: 800 clamp(2.4rem, 6vw, 3.5rem)/1.05 "Montserrat", Arial, sans-serif; letter-spacing: -1.5px; }
+.calc-big small { font-size: 1rem; font-weight: 700; letter-spacing: 0; opacity: .8; }
+.calc-bars { display: grid; gap: 16px; margin-bottom: 20px; }
+.calc-bars div { display: grid; grid-template-columns: 1fr auto; gap: 6px 12px; font-size: .88rem; }
+.calc-bars span { grid-column: 1; grid-row: 1; }
+.calc-bars em { grid-column: 2; grid-row: 1; font-style: normal; font-weight: 700; }
+.calc-bars i { grid-column: 1 / -1; grid-row: 2; height: 10px; overflow: hidden; border-radius: 6px; background: rgba(255,255,255,.18); }
+.calc-bars b { display: block; width: 0; height: 100%; border-radius: 6px; background: #fff; transition: width .5s; }
+.calc-bars b.cost { background: #ffd166; }
+.calc-line { margin: 0 0 20px; font-size: .98rem; }
+.calc-fine { margin: 14px 0 0; font-size: .78rem; opacity: .7; }
+@media (max-width: 760px) { .calc { grid-template-columns: 1fr; } .calc-inputs, .calc-out { padding: 28px 22px; } }
+@media (prefers-reduced-motion: reduce) { .calc-bars b { transition: none; } }

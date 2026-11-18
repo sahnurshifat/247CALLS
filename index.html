@@ -19,7 +19,7 @@
   <nav class="nav-links" id="nav-links">
     <a href="#how">How it works</a>
     <a href="#pricing">Pricing</a>
-    <a href="#quiz">Find my plan</a>
+    <a href="#calculator">Calculator</a>
     <a href="#faq">FAQ</a>
     <a href="#" class="btn btn-ghost" data-open-signup>Sign in</a>
     <a href="#pricing" class="btn">Get started</a>
@@ -99,6 +99,37 @@
     </div>
   </section>
 
+  <!-- CALCULATOR -->
+  <section class="section" id="calculator">
+    <h2>What is a missed call costing you?</h2>
+    <p class="sub">Move the sliders and see what answering every call could bring back.</p>
+    <div class="calc">
+      <div class="calc-inputs">
+        <div class="calc-field"><label for="c-calls">Calls you miss each week <output id="o-calls">10</output></label>
+          <input type="range" id="c-calls" min="1" max="60" value="10"></div>
+        <div class="calc-field"><label for="c-value">Average value of a customer <output id="o-value">£150</output></label>
+          <input type="range" id="c-value" min="20" max="2000" step="10" value="150"></div>
+        <div class="calc-field"><label for="c-win">Callers you would win if answered <output id="o-win">30%</output></label>
+          <input type="range" id="c-win" min="5" max="80" step="5" value="30"></div>
+        <div class="calc-toggle" role="group" aria-label="Who answers the calls">
+          <button type="button" class="on" data-mode="ai">AI receptionist</button>
+          <button type="button" data-mode="live">Live person</button>
+        </div>
+      </div>
+      <div class="calc-out">
+        <p class="calc-label">Revenue you could be winning back</p>
+        <p class="calc-big"><span id="r-year">£0</span><small> a year</small></p>
+        <div class="calc-bars">
+          <div><span>Won back each month</span><em id="r-month">£0</em><i><b id="bar-rev"></b></i></div>
+          <div><span>Cost of answering</span><em id="r-cost">£0</em><i><b id="bar-cost" class="cost"></b></i></div>
+        </div>
+        <p class="calc-line" id="r-line"></p>
+        <button type="button" class="btn btn-light" id="calc-cta">See the <span id="r-plan">AI Receptionist</span> package</button>
+        <p class="calc-fine">An estimate based on your own numbers. Real results will vary.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- PRICING -->
   <section class="section alt" id="pricing">
     <h2>Simple pricing</h2>
@@ -159,45 +190,6 @@
     <div class="dots" id="plan-dots"></div>
   </section>
 
-  <!-- QUESTIONNAIRE -->
-  <section class="section" id="quiz">
-    <h2>Find the right package</h2>
-    <p class="sub">Answer a few quick questions and we&rsquo;ll recommend the best fit.</p>
-    <form class="quiz" id="quiz-form" novalidate>
-      <div class="q-top"><span id="q-count">Question 1 of 6</span><div class="q-bar"><i id="q-bar"></i></div></div>
-      <div class="q-view" id="q-view">
-        <div class="q-track" id="q-track">
-        <div class="q-slide" data-type="single"><h3>What kind of business do you run?</h3><p class="q-hint">Pick the closest match.</p><div class="opts"><label class="opt"><input type="radio" name="business_type" value="Trades &amp; home services"><span>Trades &amp; home services</span></label><label class="opt"><input type="radio" name="business_type" value="Health &amp; wellbeing"><span>Health &amp; wellbeing</span></label><label class="opt"><input type="radio" name="business_type" value="Legal &amp; professional"><span>Legal &amp; professional</span></label><label class="opt"><input type="radio" name="business_type" value="Property &amp; lettings"><span>Property &amp; lettings</span></label><label class="opt"><input type="radio" name="business_type" value="Shops &amp; online stores"><span>Shops &amp; online stores</span></label><label class="opt"><input type="radio" name="business_type" value="Something else"><span>Something else</span></label></div></div>
-        <div class="q-slide" data-type="single"><h3>How many calls do you get?</h3><p class="q-hint">A rough guess is fine.</p><div class="opts"><label class="opt"><input type="radio" name="call_volume" value="Under 40" data-key="lt40"><span>Under 40<small>calls a month</small></span></label><label class="opt"><input type="radio" name="call_volume" value="40 to 150" data-key="mid"><span>40 to 150<small>calls a month</small></span></label><label class="opt"><input type="radio" name="call_volume" value="150 to 400" data-key="high"><span>150 to 400<small>calls a month</small></span></label><label class="opt"><input type="radio" name="call_volume" value="400+" data-key="400+"><span>400+<small>calls a month</small></span></label></div></div>
-        <div class="q-slide" data-type="single"><h3>When do you need calls answered?</h3><p class="q-hint">We can cover as much or as little as you like.</p><div class="opts"><label class="opt"><input type="radio" name="hours" value="Out of hours"><span>Out of hours<small>Evenings, nights and weekends</small></span></label><label class="opt"><input type="radio" name="hours" value="Busy times"><span>Busy times<small>When you can&rsquo;t pick up</small></span></label><label class="opt"><input type="radio" name="hours" value="24/7"><span>24/7<small>Every call, day and night</small></span></label></div></div>
-        <div class="q-slide" data-type="single"><h3>Who should answer your calls?</h3><p class="q-hint">You can change this later.</p><div class="opts"><label class="opt"><input type="radio" name="who" value="AI receptionist" data-key="ai"><span>AI receptionist<small>Instant, 24/7 and the lowest cost</small></span></label><label class="opt"><input type="radio" name="who" value="A real person" data-key="live"><span>A real person<small>A friendly human voice on every call</small></span></label><label class="opt"><input type="radio" name="who" value="A dedicated person" data-key="dedicated"><span>A dedicated person<small>The same named receptionist who knows you</small></span></label><label class="opt"><input type="radio" name="who" value="Not sure yet" data-key="unsure"><span>Not sure yet<small>Recommend one for me</small></span></label></div></div>
-        <div class="q-slide" data-type="multi"><h3>What should we do on each call?</h3><p class="q-hint">Choose all that apply.</p><div class="opts"><label class="opt"><input type="checkbox" name="tasks" value="Take messages"><span>Take messages</span></label><label class="opt"><input type="checkbox" name="tasks" value="Book appointments"><span>Book appointments</span></label><label class="opt"><input type="checkbox" name="tasks" value="Transfer urgent calls"><span>Transfer urgent calls</span></label><label class="opt"><input type="checkbox" name="tasks" value="Answer common questions"><span>Answer common questions</span></label><label class="opt"><input type="checkbox" name="tasks" value="Qualify new leads"><span>Qualify new leads</span></label><label class="opt"><input type="checkbox" name="tasks" value="Take orders"><span>Take orders</span></label></div></div>
-        <div class="q-slide" data-type="contact"><h3>Where should we send your recommendation?</h3><p class="q-hint">Last step. We&rsquo;ll be in touch shortly.</p>
-          <div class="form">
-            <input name="name" placeholder="Your name" required autocomplete="name">
-            <input name="business" placeholder="Business name" autocomplete="organization">
-            <input name="email" type="email" placeholder="Email address" required autocomplete="email">
-            <input name="phone" type="tel" placeholder="Phone number" required autocomplete="tel">
-            <p class="form-msg" role="status"></p>
-            <p class="fine">We’ll only use your details to reply to you. See our <a href="privacy.html">Privacy Policy</a>.</p>
-          </div></div>
-        <div class="q-slide" data-type="result"><div class="q-result">
-          <span class="q-check">&#10003;</span>
-          <h3>Thank you<span id="q-name"></span>!</h3>
-          <p class="q-hint">Based on your answers, we recommend:</p>
-          <p class="q-rec" id="q-rec"></p>
-          <p class="q-hint">We have your details and will be in touch shortly.</p>
-          <a href="#pricing" class="btn">See package details</a>
-        </div></div>
-        </div>
-      </div>
-      <div class="q-nav">
-        <button type="button" class="btn btn-ghost" id="q-back" hidden>Back</button>
-        <button type="button" class="btn" id="q-next" hidden>Next</button>
-      </div>
-    </form>
-  </section>
-
   <!-- FAQ -->
   <section class="section" id="faq">
     <h2>Questions</h2>
@@ -218,8 +210,8 @@
 
 <footer class="site-footer">
   <div class="f-cta">
-    <div><h3>Never miss another call.</h3><p>Answer a few quick questions and we&rsquo;ll recommend the right package.</p></div>
-    <a href="#quiz" class="btn btn-light">Find my plan</a>
+    <div><h3>Never miss another call.</h3><p>See what missed calls are costing you, then pick the package that fits.</p></div>
+    <a href="#calculator" class="btn btn-light">Try the calculator</a>
   </div>
   <div class="f-grid">
     <div class="f-brand">
@@ -230,7 +222,7 @@
     </div>
     <div>
       <h4>Quick Links</h4>
-      <ul><li><a href="#home">Home</a></li><li><a href="#how">How it works</a></li><li><a href="#pricing">Pricing</a></li><li><a href="#faq">FAQ</a></li><li><a href="#quiz">Find my plan</a></li></ul>
+      <ul><li><a href="#home">Home</a></li><li><a href="#how">How it works</a></li><li><a href="#pricing">Pricing</a></li><li><a href="#faq">FAQ</a></li><li><a href="#calculator">Calculator</a></li></ul>
     </div>
     <div>
       <h4>Legal</h4>
@@ -248,22 +240,33 @@
   <div class="f-bottom">
     <div class="snowman" aria-hidden="true">
       <span class="sm-bubble">I’ll get that!</span>
-      <svg viewBox="0 0 120 150" xmlns="http://www.w3.org/2000/svg">
-        <ellipse cx="60" cy="144" rx="52" ry="6" fill="#eceaff"/>
-        <path d="M40 72L16 58M22 61l-6-9" stroke="#8a5a2b" stroke-width="3" stroke-linecap="round" fill="none"/>
-        <g class="sm-arm"><path d="M80 72L104 56M98 59l5-9" stroke="#8a5a2b" stroke-width="3" stroke-linecap="round" fill="none"/></g>
-        <circle cx="60" cy="112" r="28" fill="#fff" stroke="#d4d1f7" stroke-width="2"/>
-        <circle cx="60" cy="72" r="21" fill="#fff" stroke="#d4d1f7" stroke-width="2"/>
-        <circle cx="60" cy="40" r="16" fill="#fff" stroke="#d4d1f7" stroke-width="2"/>
-        <path d="M44 33a16 16 0 0 1 32 0z" fill="#6c63ff"/>
-        <rect x="42" y="31" width="36" height="6" rx="3" fill="#554bd9"/>
-        <circle cx="60" cy="14" r="5" fill="#fff" stroke="#d4d1f7" stroke-width="2"/>
-        <circle cx="54" cy="42" r="1.9" fill="#222"/><circle cx="66" cy="42" r="1.9" fill="#222"/>
-        <path d="M60 45l14 3-14 3z" fill="#ff8a3d"/>
-        <path d="M53 52q7 5 14 0" stroke="#222" stroke-width="1.6" stroke-linecap="round" fill="none"/>
-        <rect x="44" y="55" width="32" height="8" rx="4" fill="#6c63ff"/>
-        <rect x="66" y="59" width="8" height="17" rx="3" fill="#554bd9"/>
-        <circle cx="56" cy="72" r="2.2" fill="#222"/><circle cx="56" cy="81" r="2.2" fill="#222"/><circle cx="56" cy="90" r="2.2" fill="#222"/>
+      <svg viewBox="0 0 150 190" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="75" cy="184" rx="66" ry="7" fill="#eceaff"/>
+        <rect x="6" y="162" width="24" height="22" rx="2" fill="#e53935"/><rect x="16" y="162" width="4" height="22" fill="#fff"/><rect x="6" y="170" width="24" height="4" fill="#fff"/>
+        <circle cx="14" cy="159" r="3.5" fill="#fff"/><circle cx="22" cy="159" r="3.5" fill="#fff"/>
+        <rect x="30" y="171" width="17" height="13" rx="2" fill="#2e9e5b"/><rect x="36" y="171" width="4" height="13" fill="#ffd166"/>
+        <path d="M52 100L25 92" stroke="#8a5a2b" stroke-width="3.2" stroke-linecap="round" fill="none"/>
+        <path d="M24 112V82a7 7 0 0 1 14 0" stroke="#e53935" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+        <path d="M24 112V82a7 7 0 0 1 14 0" stroke="#fff" stroke-width="4.5" stroke-dasharray="4 5" fill="none"/>
+        <g class="sm-arm"><path d="M98 100L124 84" stroke="#8a5a2b" stroke-width="3.2" stroke-linecap="round" fill="none"/>
+          <g transform="rotate(18 128 72)"><rect x="121" y="58" width="14" height="24" rx="3" fill="#6c63ff"/><rect x="123.5" y="61" width="9" height="15" rx="1.5" fill="#d9d6ff"/></g></g>
+        <circle cx="75" cy="150" r="32" fill="#fff" stroke="#d4d1f7" stroke-width="2"/>
+        <circle cx="75" cy="98" r="24" fill="#fff" stroke="#d4d1f7" stroke-width="2"/>
+        <circle cx="75" cy="58" r="19" fill="#fff" stroke="#d4d1f7" stroke-width="2"/>
+        <path d="M57 49Q58 24 82 19Q97 18 105 33Q96 30 93 49Z" fill="#e53935"/>
+        <rect x="54" y="44" width="42" height="10" rx="5" fill="#fff" stroke="#e3e1f5" stroke-width="1.5"/>
+        <circle cx="106" cy="35" r="5.5" fill="#fff" stroke="#e3e1f5" stroke-width="1.5"/>
+        <rect x="61" y="58" width="12" height="8" rx="3.5" fill="#1b1b2f"/><rect x="77" y="58" width="12" height="8" rx="3.5" fill="#1b1b2f"/><rect x="72" y="60" width="6" height="2" fill="#1b1b2f"/>
+        <path d="M63.5 60.5h3M79.5 60.5h3" stroke="#fff" stroke-width="1.4" stroke-linecap="round" opacity=".75"/>
+        <path d="M75 68l15 3-15 3z" fill="#ff8a3d"/>
+        <path d="M67 74q8 5 16 0" stroke="#222" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+        <rect x="55" y="77" width="40" height="9" rx="4.5" fill="#e53935"/>
+        <rect x="63" y="77" width="3.5" height="9" fill="#fff"/><rect x="73" y="77" width="3.5" height="9" fill="#fff"/><rect x="83" y="77" width="3.5" height="9" fill="#fff"/>
+        <rect x="84" y="82" width="9" height="22" rx="3" fill="#e53935"/><rect x="84" y="90" width="9" height="3.5" fill="#fff"/>
+        <circle cx="75" cy="96" r="3.2" fill="#e53935"/><circle cx="75" cy="106" r="3.2" fill="#ffd166"/><circle cx="75" cy="116" r="3.2" fill="#2e9e5b"/>
+        <path class="sm-sp" d="M16 40l2 6 6 2-6 2-2 6-2-6-6-2 6-2z" fill="#ffd166"/>
+        <path class="sm-sp" style="animation-delay:.9s" d="M134 128l2 6 6 2-6 2-2 6-2-6-6-2 6-2z" fill="#ffd166"/>
+        <path class="sm-sp" style="animation-delay:.4s" d="M136 34l1.6 4.8 4.8 1.6-4.8 1.6-1.6 4.8-1.6-4.8-4.8-1.6 4.8-1.6z" fill="#ffb3c1"/>
       </svg>
     </div>
     <p>© <span id="year"></span> 247calls.co.uk. All rights reserved.</p>

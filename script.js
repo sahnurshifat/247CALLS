@@ -106,78 +106,6 @@ if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   updateJourney();
 }
 
-/* ---------- Questionnaire (sliding form) ---------- */
-const quiz = document.getElementById('quiz-form');
-const qView = document.getElementById('q-view');
-const qTrack = document.getElementById('q-track');
-const qSlides = [...qTrack.children];
-const qLast = qSlides.length - 2;                 // index of the contact-details slide
-const qBack = document.getElementById('q-back');
-const qNext = document.getElementById('q-next');
-let qi = 0;
-
-function qShow(i) {
-  qi = i;
-  const type = qSlides[i].dataset.type;
-  const done = i > qLast;
-  qTrack.style.transform = 'translateX(-' + i * 100 + '%)';
-  qSlides.forEach((s, n) => { s.inert = n !== i; s.classList.toggle('active', n === i); });
-  qBack.hidden = i === 0 || done;
-  qNext.hidden = done || (type === 'single' && !qSlides[i].querySelector(':checked'));
-  qNext.textContent = i === qLast ? 'Get my recommendation' : 'Next';
-  document.getElementById('q-count').textContent = done ? 'All done' : 'Question ' + (i + 1) + ' of ' + (qLast + 1);
-  document.getElementById('q-bar').style.width = Math.min((i + 1) / (qLast + 1), 1) * 100 + '%';
-  qView.style.height = qSlides[i].offsetHeight + 'px';
-}
-
-/* Which package to recommend – edit the rules here */
-function recommend() {
-  const key = n => (quiz.querySelector('input[name="' + n + '"]:checked') || { dataset: {} }).dataset.key;
-  const who = key('who'), vol = key('call_volume');
-  if (who === 'dedicated' || vol === '400+') return 'Dedicated Receptionist';
-  if (who === 'live') return 'Live Receptionist';
-  if (who === 'ai') return 'AI Receptionist';
-  return vol === 'lt40' ? 'AI Receptionist' : 'Live Receptionist';   // "not sure yet"
-}
-
-quiz.addEventListener('change', e => {
-  if (e.target.type === 'radio') setTimeout(() => qShow(qi + 1), 260);   // single choice: slide on automatically
-  else qShow(qi);
-});
-qBack.addEventListener('click', () => qShow(qi - 1));
-qNext.addEventListener('click', async () => {
-  if (qi < qLast) return qShow(qi + 1);
-  const slide = qSlides[qi], msg = slide.querySelector('.form-msg');
-  const fields = [...slide.querySelectorAll('input')];
-  fields.forEach(f => f.classList.add('touched'));
-  if (!fields.every(f => f.checkValidity())) {
-    msg.className = 'form-msg err';
-    msg.textContent = 'Please add your name, email and phone number.';
-    return qShow(qi);
-  }
-  qNext.disabled = true;
-  const fd = new FormData(quiz);
-  const data = Object.fromEntries(fd);
-  data.tasks = fd.getAll('tasks').join(', ');
-  data.recommended = recommend();
-  try {
-    await sendForm('questionnaire', data);     // same placeholder as the other forms: connect it to your backend later
-    document.getElementById('q-name').textContent = data.name ? ', ' + data.name.trim().split(' ')[0] : '';
-    document.getElementById('q-rec').textContent = data.recommended;
-    setDefaultPlan(data.recommended, 'Recommended for you');   // moves the highlighted border to the recommended package
-    qShow(qi + 1);
-  } catch (err) {
-    msg.className = 'form-msg err';
-    msg.textContent = 'Something went wrong. Please try again.';
-    qShow(qi);
-  }
-  qNext.disabled = false;
-});
-quiz.addEventListener('submit', e => { e.preventDefault(); if (!qNext.hidden) qNext.click(); });
-window.addEventListener('resize', () => qShow(qi));
-window.addEventListener('load', () => qShow(qi));
-qShow(0);
-
 /* ---------- Pricing: the bordered highlight follows hover / swipe ---------- */
 const plansBox = document.querySelector('.cards');
 const planCards = [...plansBox.querySelectorAll('.card')];
@@ -228,3 +156,57 @@ plansBox.addEventListener('scroll', () => {              // swiping: highlight w
 }, { passive: true });
 setDefaultPlan(defaultCard.dataset.plan, 'Most popular');
 if (isSlider()) centerCard(defaultCard, false);
+
+/* ---------- Missed-call calculator ---------- */
+/* Keep these numbers in line with your pricing cards */
+const PRICES = {
+  ai:   { monthly: 12.5, perCall: 1.06, plan: 'AI Receptionist' },
+  live: { monthly: 0,    perCall: 2.75, plan: 'Live Receptionist' }
+};
+(function () {
+  const $ = id => document.getElementById(id);
+  const calls = $('c-calls'), value = $('c-value'), win = $('c-win'), yearEl = $('r-year');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const gbp = n => '£' + Math.round(n).toLocaleString('en-GB');
+  let mode = 'ai', shown = 0, raf = null;
+
+  function countTo(target) {                       // big number counts up smoothly
+    cancelAnimationFrame(raf);
+    if (reduce) { shown = target; yearEl.textContent = gbp(target); return; }
+    const from = shown, t0 = performance.now();
+    (function step(t) {
+      const k = Math.min((t - t0) / 450, 1), e = 1 - Math.pow(1 - k, 3);
+      shown = from + (target - from) * e;
+      yearEl.textContent = gbp(shown);
+      if (k < 1) raf = requestAnimationFrame(step);
+    })(t0);
+  }
+  function update() {
+    const p = PRICES[mode], n = calls.value * 52 / 12;           // calls per month
+    const customers = n * (win.value / 100), rev = customers * value.value;
+    const cost = p.monthly + p.perCall * n, ratio = rev / cost;
+    $('o-calls').textContent = calls.value;
+    $('o-value').textContent = gbp(+value.value);
+    $('o-win').textContent = win.value + '%';
+    $('r-month').textContent = gbp(rev);
+    $('r-cost').textContent = gbp(cost);
+    const max = Math.max(rev, cost, 1);
+    $('bar-rev').style.width = rev / max * 100 + '%';
+    $('bar-cost').style.width = cost / max * 100 + '%';
+    $('r-line').textContent = 'About ' + customers.toFixed(customers < 10 ? 1 : 0) + ' extra customers a month, or roughly £' +
+      ratio.toFixed(ratio < 10 ? 1 : 0) + ' back for every £1 you spend.';
+    $('r-plan').textContent = p.plan;
+    countTo(rev * 12);
+  }
+  [calls, value, win].forEach(el => el.addEventListener('input', update));
+  document.querySelectorAll('.calc-toggle button').forEach(btn => btn.addEventListener('click', () => {
+    mode = btn.dataset.mode;
+    document.querySelectorAll('.calc-toggle button').forEach(b => b.classList.toggle('on', b === btn));
+    update();
+  }));
+  $('calc-cta').addEventListener('click', () => {
+    setDefaultPlan(PRICES[mode].plan, 'Recommended for you');   // highlights that package card
+    document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' });
+  });
+  update();
+})();
