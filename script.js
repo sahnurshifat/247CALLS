@@ -1,16 +1,18 @@
 /* ===== Easy-edit settings ===== */
 const ROTATE_EVERY_MS = 2800;   // how long each animated line stays on screen
 
-/* ---------- Mobile menu ---------- */
+/* ---------- Mobile menu (keypad button + full-screen "press 1" menu) ---------- */
 const toggle = document.querySelector('.nav-toggle');
 const links = document.getElementById('nav-links');
-toggle.addEventListener('click', () => {
-  const open = links.classList.toggle('open');
+function setMenu(open) {
+  links.classList.toggle('open', open);
   toggle.setAttribute('aria-expanded', open);
-});
-links.addEventListener('click', e => {
-  if (e.target.tagName === 'A') { links.classList.remove('open'); toggle.setAttribute('aria-expanded', false); }
-});
+  document.body.classList.toggle('menu-open', open);     // stops the page scrolling behind the menu
+}
+toggle.addEventListener('click', () => setMenu(!links.classList.contains('open')));
+links.addEventListener('click', e => { if (e.target.closest('a')) setMenu(false); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
+window.addEventListener('resize', () => { if (window.innerWidth > 760) setMenu(false); });
 
 /* ---------- Animated text (cycles the <span>s) ---------- */
 const lines = document.querySelectorAll('#animated-text span');
